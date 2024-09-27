@@ -1,0 +1,65 @@
+import tkinter as tk
+
+# Function to convert text to binary
+def text_to_binary(text):
+    return ' '.join(format(ord(char), '08b') for char in text)
+
+# Function to convert binary to text
+def binary_to_text(binary):
+    try:
+        binary_values = binary.split()
+        text = ''.join([chr(int(b, 2)) for b in binary_values])
+        return text
+    except ValueError:
+        return "Invalid Binary"
+
+# Function to handle conversion based on the current mode
+def handle_conversion():
+    input_text = entry_name.get()
+    
+    # Perform conversion based on current mode
+    if toggle_mode['text'] == "Mode: Text to Binary":
+        result = text_to_binary(input_text)
+    else:
+        result = binary_to_text(input_text)
+    
+    # Display the result in the text box
+    text_result.config(state=tk.NORMAL)
+    text_result.delete(1.0, tk.END)
+    text_result.insert(tk.END, result)
+    text_result.config(state=tk.DISABLED)
+
+# Function to toggle between text-to-binary and binary-to-text modes
+def toggle_conversion_mode():
+    if toggle_mode['text'] == "Mode: Text to Binary":
+        toggle_mode.config(text="Mode: Binary to Text")
+    else:
+        toggle_mode.config(text="Mode: Text to Binary")
+
+# Create the main window
+window = tk.Tk()
+window.title("Text-Binary Converter")
+
+# Create a label for the name entry field
+label_name = tk.Label(window, text="Enter your text or binary:")
+label_name.pack(pady=10)
+
+# Create an entry field for the user to type their name or binary
+entry_name = tk.Entry(window, width=30)
+entry_name.pack(pady=10)
+
+# Create a button to trigger the conversion
+button_convert = tk.Button(window, text="Convert", command=handle_conversion)
+button_convert.pack(pady=10)
+
+# Create a text widget to display the result (binary or text), allowing highlighting and copying
+text_result = tk.Text(window, height=5, width=50)
+text_result.pack(pady=10)
+text_result.config(state=tk.DISABLED)
+
+# Create a button to toggle between text-to-binary and binary-to-text
+toggle_mode = tk.Button(window, text="Mode: Text to Binary", command=toggle_conversion_mode)
+toggle_mode.pack(pady=10)
+
+# Run the app
+window.mainloop() 
